@@ -6,33 +6,49 @@ use phpDocumentor\Reflection\Types\Integer;
 
 class SalesByMatch {
 
+    public array $colorsChecked;
+    public array $colorsArray;
+
     public function TakeAllPairs($n, $ar)
     {
         $pairs = 0;
-        $colorsChecked = [];
+        $this->colorsArray = $ar;
+        $this->colorsChecked = [];
         
-        foreach ($ar as $color) {
+        foreach ($this->colorsArray as $color) {
             
-            $colorList = [];
+            $sameColorList = [];
             
-            for ($i=0; $i < $n; $i++) { 
-                if($color == $ar[$i] && !in_array($color, $colorsChecked))
+            for ($i=0; $i < $n; $i++) {
+                $isSameColor = ($color == $this->colorsArray[$i]);
+                $wasNotChecked = !in_array($color, $this->colorsChecked);
+                if( $isSameColor && $wasNotChecked)
                 {
-                    array_push( $colorList, $ar[$i]);
+                    array_push( $sameColorList, $this->colorsArray[$i]);
                 }
             }
 
-            $quantityColors = count($colorList) / 2;
-            $pairs += round($quantityColors, 0 , PHP_ROUND_HALF_DOWN);
+            $pairs += $this->AddPair($sameColorList);
 
-            if(!in_array($color, $colorsChecked))
-            {
-                array_push($colorsChecked, $color);
-            }
+            $this->AddInColorsCheckedList($color);
         }
 
         return $pairs;
 
+    }
+
+    public function AddPair($color)
+    {
+        $quantityOfColors = count($color) / 2;
+       return round($quantityOfColors, 0 , PHP_ROUND_HALF_DOWN);
+    }
+
+    public function AddInColorsCheckedList($color)
+    {
+        if(!in_array($color, $this->colorsChecked))
+            {
+                array_push($this->colorsChecked, $color);
+            }
     }
 
 }
