@@ -2,8 +2,6 @@
 
 namespace App;
 
-use phpDocumentor\Reflection\Types\Integer;
-
 class SalesByMatch {
 
     public array $colorsChecked;
